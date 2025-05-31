@@ -1,0 +1,11 @@
+{
+  "name": "Nodejs-Open-Source-Monitoring",
+  "type": "module",
+  "scripts": {
+    "test": "standard && tap test/**/*.test.js",
+    "start": "fastify start -l info app.js"
+  },
+  "dependencies": {
+    "fastify": "^5.3.3"
+  }
+}
