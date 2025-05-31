@@ -6,6 +6,7 @@
     "start": "fastify start -l info app.js"
   },
   "dependencies": {
-    "fastify": "^5.3.3"
+    "fastify": "^5.3.3",
+    "prom-client": "^15.1.3"
   }
 }
