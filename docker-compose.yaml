@@ -1,30 +1,41 @@
-version: '3.8'  # Use uma versão específica para evitar problemas de compatibilidade
+version: '3.8'
 
 services:
+  app:                   
+    build: .
+    container_name: server-nodejs
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
-      - 9090:9090
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
+      - "9090:9090"
     volumes:
-      - prometheus_data:/prometheus 
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      - app              
     restart: unless-stopped
+    networks:
+      - monitoring
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - 3030:3000  # Porta padrão do Grafana, corrigida para evitar conflito com a API
+      - "3030:3000"
     depends_on:
       - prometheus
     volumes:
-      - grafana_data:/var/lib/grafana 
       - ./grafana.yml:/etc/grafana/grafana.yml
     restart: unless-stopped
+    networks:
+      - monitoring
 
-volumes:
-  prometheus_data:
-  grafana_data:
+networks:
+  monitoring:
+    driver: bridge
